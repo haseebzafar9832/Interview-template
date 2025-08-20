@@ -321,3 +321,7 @@ This project is created for interview evaluation purposes and demonstrates clean
 ---
 
 **Note**: This application is designed to showcase clean architecture principles, GetX state management, and professional Flutter development practices. It serves as a comprehensive example of modern Flutter application development.
+
+
+## video Link
+https://drive.google.com/file/d/1Umo2a7SYTUJYPAlS12BEF3tyGN90r9SO/view?usp=sharing

@@ -1,0 +1,4 @@
+#Wed Aug 20 12:34:58 PKT 2025
+base.0=/Users/mac/projects/Interview-template/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
