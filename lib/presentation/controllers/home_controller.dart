@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import '../../core/constants/app_constants.dart';
-import '../../core/routes/app_routes.dart';
 
 /// Home controller for managing home screen logic
 class HomeController extends GetxController {

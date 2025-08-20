@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/routes/app_routes.dart';
 import '../../controllers/home_controller.dart';
 import '../../widgets/common/app_bar.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/theme/text_styles.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/routes/app_routes.dart';
 
 /// Home page
 class HomePage extends GetView<HomeController> {

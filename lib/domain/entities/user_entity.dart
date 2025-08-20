@@ -14,28 +14,28 @@ abstract class UserEntity {
 
   /// User unique identifier
   final String id;
-  
+
   /// User full name
   final String name;
-  
+
   /// User email address
   final String email;
-  
+
   /// User phone number
   final String phone;
-  
+
   /// User avatar image URL
   final String avatar;
-  
+
   /// User date of birth
   final DateTime? dateOfBirth;
-  
+
   /// Whether the user account is active
   final bool isActive;
-  
+
   /// When the user account was created
   final DateTime? createdAt;
-  
+
   /// When the user account was last updated
   final DateTime? updatedAt;
 
@@ -44,7 +44,7 @@ abstract class UserEntity {
     if (dateOfBirth == null) return null;
     final now = DateTime.now();
     int age = now.year - dateOfBirth!.year;
-    if (now.month < dateOfBirth!.month || 
+    if (now.month < dateOfBirth!.month ||
         (now.month == dateOfBirth!.month && now.day < dateOfBirth!.day)) {
       age--;
     }
@@ -56,7 +56,8 @@ abstract class UserEntity {
     final nameParts = name.split(' ');
     if (nameParts.isEmpty) return '';
     if (nameParts.length == 1) return nameParts[0][0].toUpperCase();
-    return '${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}'.toUpperCase();
+    return '${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}'
+        .toUpperCase();
   }
 
   /// Check if user has avatar

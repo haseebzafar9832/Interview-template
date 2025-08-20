@@ -265,8 +265,8 @@ class _CampaignMatchingPageState extends State<CampaignMatchingPage>
             ClipRRect(
               borderRadius: BorderRadius.circular(AppTheme.radius12),
               child: SizedBox(
-                width: 80,
-                height: 80,
+                width: 110,
+                height: 110,
                 child: Image.network(
                   campaign['image'] ?? '',
                   fit: BoxFit.cover,
@@ -314,7 +314,7 @@ class _CampaignMatchingPageState extends State<CampaignMatchingPage>
 
                   // Tags
                   SizedBox(
-                    height: 32,
+                    height: 22,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount:
@@ -336,7 +336,7 @@ class _CampaignMatchingPageState extends State<CampaignMatchingPage>
                           ),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
-                            vertical: 4,
+                            // vertical: 4,
                           ),
                           decoration: BoxDecoration(
                             color: AppColors.textInverse.withOpacity(0.05),
