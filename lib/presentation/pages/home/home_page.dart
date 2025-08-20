@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../core/routes/app_routes.dart';
 import '../../controllers/home_controller.dart';
 import '../../widgets/common/app_bar.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/colors.dart';
 import '../../../core/theme/text_styles.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
+import '../../../data/models/menu_item_model.dart';
+import '../../../data/models/campaign_stats_model.dart';
 
 /// Home page
 class HomePage extends GetView<HomeController> {
@@ -14,6 +16,10 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isTablet = screenSize.width > 600;
+    final isDesktop = screenSize.width > 900;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const CustomAppBar(title: 'MY FLYN', showBackButton: false),
@@ -25,20 +31,26 @@ class HomePage extends GetView<HomeController> {
         return RefreshIndicator(
           onRefresh: controller.refreshData,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppTheme.spacing16),
+            padding: EdgeInsets.all(
+              isDesktop
+                  ? 24.0
+                  : isTablet
+                  ? 20.0
+                  : AppTheme.spacing16,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profile Header with Korean Greeting
-                _buildProfileHeader(),
-                const SizedBox(height: AppTheme.spacing24),
+                _buildProfileHeader(isTablet, isDesktop),
+                SizedBox(height: isDesktop ? 32.0 : AppTheme.spacing24),
 
                 // Campaign Statistics
-                _buildCampaignStats(),
-                const SizedBox(height: AppTheme.spacing24),
+                _buildCampaignStats(isTablet, isDesktop),
+                SizedBox(height: isDesktop ? 32.0 : AppTheme.spacing24),
 
                 // Menu Items
-                _buildMenuItems(),
+                _buildMenuItems(isTablet, isDesktop),
               ],
             ),
           ),
@@ -47,7 +59,26 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(bool isTablet, bool isDesktop) {
+    final avatarSize =
+        isDesktop
+            ? 100.0
+            : isTablet
+            ? 90.0
+            : 80.0;
+    final titleSize =
+        isDesktop
+            ? 24.0
+            : isTablet
+            ? 22.0
+            : 20.0;
+    final subtitleSize =
+        isDesktop
+            ? 16.0
+            : isTablet
+            ? 15.0
+            : 14.0;
+
     return Row(
       children: [
         Expanded(
@@ -56,32 +87,46 @@ class HomePage extends GetView<HomeController> {
             children: [
               Text(
                 AppConstants.koreanGreeting,
-                style: AppTextStyles.headlineMedium,
+                style: AppTextStyles.headlineMedium.copyWith(
+                  fontSize: titleSize,
+                ),
               ),
               Text(
                 AppConstants.koreanGreeting1,
-                style: AppTextStyles.labelLarge,
+                style: AppTextStyles.labelLarge.copyWith(
+                  fontSize: subtitleSize,
+                ),
               ),
             ],
           ),
         ),
 
         Container(
-          width: 80,
-          height: 80,
+          width: avatarSize,
+          height: avatarSize,
           decoration: BoxDecoration(
             color: AppColors.secondary,
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(avatarSize / 2),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.camera_alt, color: AppColors.secondaryDark, size: 24),
-              const SizedBox(height: 4),
+              Icon(
+                Icons.camera_alt,
+                color: AppColors.secondaryDark,
+                size:
+                    isDesktop
+                        ? 32.0
+                        : isTablet
+                        ? 28.0
+                        : 24.0,
+              ),
+              SizedBox(height: isDesktop ? 6.0 : 4.0),
               Text(
                 AppConstants.koreanImageRegistration,
                 style: AppTextStyles.caption.copyWith(
                   color: AppColors.secondaryDark,
+                  fontSize: isDesktop ? 12.0 : 10.0,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -92,13 +137,44 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildCampaignStats() {
+  Widget _buildCampaignStats(bool isTablet, bool isDesktop) {
+    final cardHeight =
+        isDesktop
+            ? 140.0
+            : isTablet
+            ? 130.0
+            : 121.0;
+    final horizontalPadding =
+        isDesktop
+            ? 28.0
+            : isTablet
+            ? 24.0
+            : 20.0;
+    final titleSize =
+        isDesktop
+            ? 18.0
+            : isTablet
+            ? 16.0
+            : 14.0;
+    final valueSize =
+        isDesktop
+            ? 28.0
+            : isTablet
+            ? 24.0
+            : 20.0;
+    final labelSize =
+        isDesktop
+            ? 14.0
+            : isTablet
+            ? 13.0
+            : 12.0;
+
     return InkWell(
       onTap: () {
         Get.toNamed(AppRoutes.campaignMatching);
       },
       child: SizedBox(
-        height: 121,
+        height: cardHeight,
         child: Card(
           elevation: 2,
           color: AppColors.cardColor,
@@ -107,7 +183,7 @@ class HomePage extends GetView<HomeController> {
             borderRadius: BorderRadius.circular(AppTheme.radius16),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -117,41 +193,76 @@ class HomePage extends GetView<HomeController> {
                   children: [
                     Text(
                       AppConstants.myAccount,
-                      style: AppTextStyles.titleSmall,
+                      style: AppTextStyles.titleSmall.copyWith(
+                        fontSize: titleSize,
+                      ),
                     ),
-                    Icon(Icons.arrow_forward_ios_rounded, size: 18),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size:
+                          isDesktop
+                              ? 22.0
+                              : isTablet
+                              ? 20.0
+                              : 18.0,
+                    ),
                   ],
                 ),
-                const SizedBox(height: AppTheme.spacing4),
+                SizedBox(height: isDesktop ? 8.0 : AppTheme.spacing4),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildStatItem(
-                      value: '0',
-                      label: AppConstants.koreanApplication,
+                    Obx(
+                      () => _buildStatItem(
+                        value:
+                            controller.campaignStats.value.applications
+                                .toString(),
+                        label: AppConstants.koreanApplication,
+                        valueSize: valueSize,
+                        labelSize: labelSize,
+                      ),
                     ),
                     Icon(
                       Icons.arrow_forward_ios_rounded,
-                      size: 18,
+                      size:
+                          isDesktop
+                              ? 22.0
+                              : isTablet
+                              ? 20.0
+                              : 18.0,
                       color: AppColors.secondaryLight,
                     ),
 
-                    // const SizedBox(width: AppTheme.spacing16),
-                    _buildStatItem(
-                      value: '0',
-                      label: AppConstants.koreanInProgress,
+                    Obx(
+                      () => _buildStatItem(
+                        value:
+                            controller.campaignStats.value.inProgress
+                                .toString(),
+                        label: AppConstants.koreanInProgress,
+                        valueSize: valueSize,
+                        labelSize: labelSize,
+                      ),
                     ),
                     Icon(
                       Icons.arrow_forward_ios_rounded,
-                      size: 18,
+                      size:
+                          isDesktop
+                              ? 22.0
+                              : isTablet
+                              ? 20.0
+                              : 18.0,
                       color: AppColors.secondaryLight,
                     ),
 
-                    // const SizedBox(width: AppTheme.spacing16),
-                    _buildStatItem(
-                      value: '0',
-                      label: AppConstants.koreanCompleted,
+                    Obx(
+                      () => _buildStatItem(
+                        value:
+                            controller.campaignStats.value.completed.toString(),
+                        label: AppConstants.koreanCompleted,
+                        valueSize: valueSize,
+                        labelSize: labelSize,
+                      ),
                     ),
                   ],
                 ),
@@ -163,7 +274,12 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildStatItem({required String value, required String label}) {
+  Widget _buildStatItem({
+    required String value,
+    required String label,
+    required double valueSize,
+    required double labelSize,
+  }) {
     return Column(
       children: [
         const SizedBox(height: AppTheme.spacing4),
@@ -172,109 +288,101 @@ class HomePage extends GetView<HomeController> {
           value,
           style: AppTextStyles.headlineMedium2.copyWith(
             color: AppColors.primary,
+            fontSize: valueSize,
           ),
         ),
         const SizedBox(height: AppTheme.spacing4),
-        Text(label, style: AppTextStyles.titleMedium),
-      ],
-    );
-  }
-
-  Widget _buildMenuItems() {
-    final List<Map<String, dynamic>> _menuItems = [
-      {'icon': Icons.person, 'title': AppConstants.koreanMyInformation},
-      {'icon': Icons.announcement, 'title': AppConstants.koreanNotices},
-      {'icon': Icons.help, 'title': AppConstants.koreanOneOnOneInquiry},
-      {'icon': Icons.question_answer, 'title': AppConstants.koreanFAQ},
-      {'icon': Icons.description, 'title': AppConstants.koreanTermsAndPolicies},
-      {'icon': Icons.logout, 'title': AppConstants.koreanLogout},
-      {
-        'icon': Icons.person_remove,
-        'title': AppConstants.koreanMembershipWithdrawal,
-      },
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children:
-              _menuItems.asMap().entries.map((entry) {
-                final item = entry.value;
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: AppColors.secondary),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 18,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          item['icon'],
-                          color: AppColors.textSecondary,
-                          size: 19,
-                        ),
-                        SizedBox(width: 10),
-
-                        Text(item['title'], style: AppTextStyles.buttonMedium),
-                        Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.textTertiary,
-                          size: 16,
-                        ),
-
-                        // Divider(height: 4, color: Colors.red),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
+        Text(
+          label,
+          style: AppTextStyles.titleMedium.copyWith(fontSize: labelSize),
         ),
       ],
     );
   }
 
-  void _showLogoutDialog() {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              Get.offAllNamed(AppRoutes.splash);
-            },
-            child: const Text('Logout'),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget _buildMenuItems(bool isTablet, bool isDesktop) {
+    final itemHeight =
+        isDesktop
+            ? 70.0
+            : isTablet
+            ? 65.0
+            : 60.0;
+    final iconSize =
+        isDesktop
+            ? 24.0
+            : isTablet
+            ? 22.0
+            : 19.0;
+    final titleSize =
+        isDesktop
+            ? 16.0
+            : isTablet
+            ? 15.0
+            : 14.0;
+    final arrowSize =
+        isDesktop
+            ? 20.0
+            : isTablet
+            ? 18.0
+            : 16.0;
 
-  void _showWithdrawalDialog() {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Membership Withdrawal'),
-        content: const Text(
-          'Are you sure you want to withdraw your membership? This action cannot be undone.',
-        ),
-        actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              Get.offAllNamed(AppRoutes.splash);
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Withdraw'),
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            children:
+                controller.menuItems.map((item) {
+                  return Container(
+                    height: itemHeight,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: AppColors.secondary),
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: item.onTap,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isDesktop ? 16.0 : 10.0,
+                          vertical: isDesktop ? 22.0 : 18.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              item.icon,
+                              color:
+                                  item.isDestructive
+                                      ? AppColors.error
+                                      : AppColors.textSecondary,
+                              size: iconSize,
+                            ),
+                            SizedBox(width: isDesktop ? 16.0 : 10.0),
+
+                            Expanded(
+                              child: Text(
+                                item.title,
+                                style: AppTextStyles.buttonMedium.copyWith(
+                                  fontSize: titleSize,
+                                  color:
+                                      item.isDestructive
+                                          ? AppColors.error
+                                          : null,
+                                ),
+                              ),
+                            ),
+
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: AppColors.textTertiary,
+                              size: arrowSize,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
           ),
         ],
       ),

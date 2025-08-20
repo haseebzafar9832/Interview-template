@@ -64,7 +64,7 @@ class _SplashPageState extends State<SplashPage>
                 child: Text(
                   AppConstants.appName,
                   style: AppTextStyles.displayLarge.copyWith(
-                    color: AppColors.textInverse,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2.0,
                   ),
