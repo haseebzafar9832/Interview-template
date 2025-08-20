@@ -349,14 +349,7 @@ class HomePage extends GetView<HomeController> {
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              item.icon,
-                              color:
-                                  item.isDestructive
-                                      ? AppColors.error
-                                      : AppColors.textSecondary,
-                              size: iconSize,
-                            ),
+                            Icon(item.icon, size: iconSize),
                             SizedBox(width: isDesktop ? 16.0 : 10.0),
 
                             Expanded(
@@ -364,10 +357,6 @@ class HomePage extends GetView<HomeController> {
                                 item.title,
                                 style: AppTextStyles.buttonMedium.copyWith(
                                   fontSize: titleSize,
-                                  color:
-                                      item.isDestructive
-                                          ? AppColors.error
-                                          : null,
                                 ),
                               ),
                             ),

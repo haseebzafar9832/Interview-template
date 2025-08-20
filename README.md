@@ -27,6 +27,9 @@ lib/
 │   └── utils/                    
 │       ├── extensions/           # Useful extensions
 │       └── helpers/              # Helper functions
+|   ├── routes/                       # Navigation
+│         ├── app_pages.dart           # Page definitions
+│         └── app_routes.dart          # Route names
 │
 ├── data/                         # Minimal data layer for local state
 │   └── models/                   
@@ -56,9 +59,6 @@ lib/
 │       │   └── app_bar.dart      # Custom app bar
 │       └── profile/              # Profile-specific widgets
 │
-├── routes/                       # Navigation
-│   ├── app_pages.dart           # Page definitions
-│   └── app_routes.dart          # Route names
 │
 └── main.dart                     # App entry point
 ```
